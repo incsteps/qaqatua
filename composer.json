@@ -35,7 +35,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            ".vendor/phpseclib/phpseclib/phpseclib/Crypt/RSA.php"
+            "vendor/phpseclib/phpseclib/phpseclib/Crypt/RSA.php"
         ]
     },
     "autoload-dev": {
