@@ -28,10 +28,9 @@ class EchoController extends Controller
     {
         $input = $request->all();
 
-        $encode = $input['payload']['a']['b'];
-        $ok = openssl_public_encrypt($encode, $encrypted, $this->pubKey);
-        $input['ok']=$ok;
-        $input['payload']['a']['enc'] = base64_encode($encrypted);
+        $encode = $input['msg'];
+        openssl_public_encrypt($encode, $encrypted, $this->pubKey);
+        $input['payload']['msg'] = base64_encode($encrypted);
 
         $response = $input;
         return response()->json($response, 200);
@@ -41,9 +40,9 @@ class EchoController extends Controller
     {
         $input = $request->all();
 
-        $decoded = base64_decode($input['payload']['a']['b']);
+        $decoded = base64_decode($input['msg']);
         openssl_private_decrypt($decoded, $decrypted, $this->privKey);
-        $input['payload']['a']['b'] = $decrypted;
+        $input['msg'] = $decrypted;
         $response = $input;
 
         return response()->json($response, 201);
