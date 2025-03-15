@@ -14,7 +14,7 @@ add('writable_dirs', []);
 
 // Hosts
 
-host('checknif.es')
+host('qaqatua.com')
     ->set('http_user', 'dh_7nbyjq')
     ->set('http_group', 'pg2551540')
     ->set('remote_user', 'dh_7nbyjq')
