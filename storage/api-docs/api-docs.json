@@ -1,0 +1,90 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "QA Encription/Decription API",
+        "description": "QA enc/dec api",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "local server"
+        },
+        {
+            "url": "https://qaqatua.com",
+            "description": "production server"
+        }
+    ],
+    "paths": {
+        "/api/encrypt": {
+            "post": {
+                "summary": "Encrypt fields of a json payload",
+                "operationId": "82e0cf0919110dcdd53c7ea05981df5e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "payload": {
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "payload": {
+                                        "msg": "Jessica Smith"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/decrypt": {
+            "post": {
+                "summary": "Decrypt fields of a json payload",
+                "operationId": "7fd39b5d5b8d3ed7c2de9c9a213f11ea",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "payload": {
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "payload": {
+                                        "msg": "DWmP95kLSEQx/+wxkbWidpQjuPk6Wqc2N8+BT4D0fGJuvg3lu36The+mdz4t8bwB1Fjo+ARv4x1gaTLn+cs0Ap8u3HLwReAKQk3xHcONgJPUE4QJY6d1XF0rGptBr5tueGjRu3ZefmcKYLmSmN2sWUhQnDghA871tIEN2VAIiXiCQUkHL4Rk94FLU1LaF/whaqC0BI+QNMoc7sagIdoOBIjCXApKblY40sib8HqOGuTkjwhDtHPGWMWMxgQmdoawnpH8DbthlVyxSu7Jkqtb6iAJgsYXQZ3ysFSK5k3hnH5ddbFMrpeteDtrKXg9aFZi2fg/oO9uaxKFBm909ceImw=="
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

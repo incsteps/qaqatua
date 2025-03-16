@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use phpseclib3\Crypt\PublicKeyLoader;
-use phpseclib3\Crypt\Common\PrivateKey;
-use phpseclib3\Crypt\Common\PublicKey;
 
 class EchoController extends Controller
 {
@@ -29,13 +27,36 @@ class EchoController extends Controller
         return $pubKey;
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/encrypt",
+     *     summary="Encrypt fields of a json payload",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="payload",
+     *                     type="object"
+     *                 ),
+     *                 example={"payload":  { "msg": "Jessica Smith"  } }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function encrypt(Request $request) : JsonResponse
     {
         $pubKey = $this->publicKey();
 
         $input = $request->all();
 
-        $encode = $input['msg'];
+        $encode = $input['payload']['msg'];
         openssl_public_encrypt($encode, $encrypted, $pubKey);
         $input['payload']['msg'] = base64_encode($encrypted);
 
@@ -43,15 +64,37 @@ class EchoController extends Controller
         return response()->json($response, 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/decrypt",
+     *     summary="Decrypt fields of a json payload",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="payload",
+     *                     type="object"
+     *                 ),
+     *                 example={"payload":  { "msg": "DWmP95kLSEQx/+wxkbWidpQjuPk6Wqc2N8+BT4D0fGJuvg3lu36The+mdz4t8bwB1Fjo+ARv4x1gaTLn+cs0Ap8u3HLwReAKQk3xHcONgJPUE4QJY6d1XF0rGptBr5tueGjRu3ZefmcKYLmSmN2sWUhQnDghA871tIEN2VAIiXiCQUkHL4Rk94FLU1LaF/whaqC0BI+QNMoc7sagIdoOBIjCXApKblY40sib8HqOGuTkjwhDtHPGWMWMxgQmdoawnpH8DbthlVyxSu7Jkqtb6iAJgsYXQZ3ysFSK5k3hnH5ddbFMrpeteDtrKXg9aFZi2fg/oO9uaxKFBm909ceImw=="} }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function decrypt(Request $request) : JsonResponse
     {
         $privKey = $this->privateKey();
 
         $input = $request->all();
 
-        $decoded = base64_decode($input['msg']);
+        $decoded = base64_decode($input['payload']['msg']);
         openssl_private_decrypt($decoded, $decrypted, $privKey);
-        $input['msg'] = $decrypted;
+        $input['payload']['msg'] = $decrypted;
         $response = $input;
 
         return response()->json($response, 201);
