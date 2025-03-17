@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Qaqatua;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use phpseclib3\Crypt\PublicKeyLoader;
+use OpenApi\Attributes as OA;
 
 class EchoController extends Controller
 {
@@ -15,89 +18,95 @@ class EchoController extends Controller
     {
     }
 
-    private function privateKey(){
-        $strPrivkey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1FSMbd5WPw18Pq6YTAV0CIrtmJQkid+YmpIScYw5pbQvOwlAMJpeA5zZhxwlsXzHQiZODoiFKw++oQaUywN0WHZWpqxmT3IROpv52SW7zW6WD6Qf4dxs0cdUUb0WhS5pjblZrKlNNmIGegehPkakqhARVD9YzGzOx0xtKYAlk0GjamqJaZwdKwhnkj8Gl/bbi5OAeN9qjGYoWSmnNGk/arY+1BDP9Xr1xt7KnthoPSL8qGn3QlasUTq2VFLAHAwatdgC+AAc3bJnq6SSvk3xE09vUhzSz0iBJdF1Ctmsc7cSqT2qkr9FXGd3INk2rvPSbHc5sLMAUWPQ1L9QyfDEtAgMBAAECggEAFO+JrI5J22IyJmSpAb+BmlKbqfaUNMj58fPJZS9KpkO2PsRWbuEzWPLiZbGWVFI5NywAwxJGmRdIKQLV76U+qmTnPcOLZH31SgaimthonHg3DaYuhrp2ibyzbvZibYCJK//AvAkbsnf0XHgWfMSRc1nqCk+Xazc05dVLbXDnBSGlTjmwWThYNEgw63QD1dXdZpsVClYCiYsB16TDgYl9mTWilTl/iX+BWIZkNFc1sDcZUKxIeifjaOdMUoHG/AwVv7nouEVHa/P9NXLbdGCrn89xv8a2WjV2Ed9VsowVSbu4RKFw/CPhk+S6ZtW8XFYIZpANThAd0GUwduwlePGLnQKBgQDsI2ATXxdDLss0iYcXvH7wRJv02roIgBIdxqOjPPyJ47DOssccVOSCpRX2J1HL5B5i2P4Eh/+lzRgJADYOt+OxsNNSiZjhxZ/xrOEGLLQa3OfuxyJ+vXY0GsXUvSmT7UAEnOgrbMcxRc/8Atslg99lGTDW4swBkOoGiGwAeQgDawKBgQDEUEgWZqC0PgIBPc+OCxbOk3T0Z9gRmlgo4poiaw170Es/NLZ+xkaTUZ/JLjWLPXwjxBmhcNjdaszq3StXsb4inhzNsAcRZrzFp9CcfjSw9PGmmaAaYNw78N9nLa3SXGlmcFcCNtUBPriXFXWJl+v/DN/CysY1hpvvzLTQAT/bxwKBgQCFCOEFyNrYNLKy5JBBZSa2wlCCv/9y7oRGVjS2sJMuNCLWMI5QfdtHZy5aQYipr9kWo11ovB3hEQzrdTz/ScZzw0UrCO4itC4J//W+fszxHWdldLcQZDkF3dd6pR+ZgV5Buwxp+py2O7iTKCDCn+rpkCmdxqRcdYIDMDR4h7dmBQKBgGRujfKn3l9Xub7Y2G5azfgxCAxhc/DNfXytMR2alvNYxKY5WYPR/BkyEQTjVxE9C11g3ZvyF4BvOxaMv7fFfvhG24V/IJ6OaNTV3auyBVLifR42Seo003b269PlUp/kFygJIPpJAv/4Dod8uv0BdAKvm2oUQwLvMqejmn0vpnPRAoGBANFxY33biicnpm0HtNkQLw8G0rKfW1Ny4ZMQAv5b+fN/HJ5XV4aTnVR9Yf42hgKM1SM9ny6RaPeyEa9UMiXBKO2Voy08qONH/OvWLRkvrQYg+T92qn9yTMIWEz0sscol8Eb6aY/A493sNYmGomOMe1J5+pPfldHbR6XB58E/ICLg";
+    private function privateKey(User $user){
+        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+        $strPrivkey = $project->privkey;
         $privKey = PublicKeyLoader::loadPrivateKey($strPrivkey);
         return $privKey;
     }
 
-    private function publicKey(){
-        $strPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtRUjG3eVj8NfD6umEwFdAiK7ZiUJInfmJqSEnGMOaW0LzsJQDCaXgOc2YccJbF8x0ImTg6IhSsPvqEGlMsDdFh2VqasZk9yETqb+dklu81ulg+kH+HcbNHHVFG9FoUuaY25WaypTTZiBnoHoT5GpKoQEVQ/WMxszsdMbSmAJZNBo2pqiWmcHSsIZ5I/Bpf224uTgHjfaoxmKFkppzRpP2q2PtQQz/V69cbeyp7YaD0i/Khp90JWrFE6tlRSwBwMGrXYAvgAHN2yZ6ukkr5N8RNPb1Ic0s9IgSXRdQrZrHO3Eqk9qpK/RVxndyDZNq7z0mx3ObCzAFFj0NS/UMnwxLQIDAQAB";
+    private function publicKey(User $user){
+        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+        $strPublicKey = $project->pubkey;
         $pubKey = PublicKeyLoader::loadPublicKey($strPublicKey);
         return $pubKey;
     }
 
-
-    /**
-     * @OA\Post(
-     *     path="/api/encrypt",
-     *     summary="Encrypt fields of a json payload",
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="payload",
-     *                     type="object"
-     *                 ),
-     *                 example={"payload":  { "msg": "Jessica Smith"  } }
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
-     */
-    public function encrypt(Request $request) : JsonResponse
-    {
-        $pubKey = $this->publicKey();
-
-        $input = $request->all();
-
-        $encode = $input['payload']['msg'];
-        openssl_public_encrypt($encode, $encrypted, $pubKey);
-        $input['payload']['msg'] = base64_encode($encrypted);
-
-        $response = $input;
-        return response()->json($response, 200);
+    private function fields(User $user){
+        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+        return explode(",",''.$project->fields);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/decrypt",
-     *     summary="Decrypt fields of a json payload",
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="payload",
-     *                     type="object"
-     *                 ),
-     *                 example={"payload":  { "msg": "DWmP95kLSEQx/+wxkbWidpQjuPk6Wqc2N8+BT4D0fGJuvg3lu36The+mdz4t8bwB1Fjo+ARv4x1gaTLn+cs0Ap8u3HLwReAKQk3xHcONgJPUE4QJY6d1XF0rGptBr5tueGjRu3ZefmcKYLmSmN2sWUhQnDghA871tIEN2VAIiXiCQUkHL4Rk94FLU1LaF/whaqC0BI+QNMoc7sagIdoOBIjCXApKblY40sib8HqOGuTkjwhDtHPGWMWMxgQmdoawnpH8DbthlVyxSu7Jkqtb6iAJgsYXQZ3ysFSK5k3hnH5ddbFMrpeteDtrKXg9aFZi2fg/oO9uaxKFBm909ceImw=="} }
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
-     */
+    #[OA\Post(path:"/api/encrypt",summary:"Encrypt a payload",security:[['bearerAuth'=>[]]])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(
+        properties: [
+            new OA\Property(
+                property: "example",
+                description: "",
+                required: ["false"],
+                type: "string",
+                example: "My Project"
+            )
+        ],
+        type: 'object'
+    ))]
+    #[OA\Response(response: '200', description: 'The project')]
+    public function encrypt(Request $request) : JsonResponse
+    {
+        try {
+            $pubKey = $this->publicKey($request->user());
+
+            $input = json_decode($request->getContent(), true);;
+
+            $fields = $this->fields($request->user());
+            foreach ($fields as $field){
+                if( isset($input[$field]) ) {
+                    $encode = $input[$field];
+                    openssl_public_encrypt($encode, $encrypted, $pubKey);
+                    $input[$field] = base64_encode($encrypted);
+                }
+            }
+
+            return response()->json($input, 200);
+        }catch (\Exception $e){
+            return response()->json(["error"=>$e->getMessage()], 500);
+        }
+    }
+
+
+    #[OA\Post(path:"/api/decrypt",summary:"Decrypt a payload",security:[['bearerAuth'=>[]]])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(
+        properties: [
+            new OA\Property(
+                property: "example",
+                description: "",
+                required: ["false"],
+                type: "string",
+                example: "DWmP95kLSEQx/+wxkbWidpQjuPk6Wqc2N8+BT4D0fGJuvg3lu36The+mdz4t8bwB1Fjo+ARv4x1gaTLn+cs0Ap8u3HLwReAKQk3xHcONgJPUE4QJY6d1XF0rGptBr5tueGjRu3ZefmcKYLmSmN2sWUhQnDghA871tIEN2VAIiXiCQUkHL4Rk94FLU1LaF/whaqC0BI+QNMoc7sagIdoOBIjCXApKblY40sib8HqOGuTkjwhDtHPGWMWMxgQmdoawnpH8DbthlVyxSu7Jkqtb6iAJgsYXQZ3ysFSK5k3hnH5ddbFMrpeteDtrKXg9aFZi2fg/oO9uaxKFBm909ceImw=="
+            )
+        ],
+        type: 'object'
+    ))]
+    #[OA\Response(response: '200', description: 'The project')]
     public function decrypt(Request $request) : JsonResponse
     {
-        $privKey = $this->privateKey();
+        try{
+            $privKey = $this->privateKey($request->user());
 
-        $input = $request->all();
+            $input = $request->all();
 
-        $decoded = base64_decode($input['payload']['msg']);
-        openssl_private_decrypt($decoded, $decrypted, $privKey);
-        $input['payload']['msg'] = $decrypted;
-        $response = $input;
-
-        return response()->json($response, 201);
+            $fields = $this->fields($request->user());
+            foreach ($fields as $field){
+                if( isset($input[$field]) ) {
+                    $decoded = base64_decode($input[$field]);
+                    openssl_private_decrypt($decoded, $decrypted, $privKey);
+                    $input[$field] = $decrypted;
+                }
+            }
+            return response()->json($input, 201);
+        }catch (\Exception $e){
+            return response()->json(["error"=>$e->getMessage()], 500);
+        }
     }
 
 }

@@ -18,6 +18,10 @@ const sidebarNavItems: NavItem[] = [
         title: 'Appearance',
         href: '/settings/appearance',
     },
+    {
+        title: 'Access Token',
+        href: '/settings/accesstoken',
+    },
 ];
 
 const page = usePage();

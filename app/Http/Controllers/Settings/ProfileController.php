@@ -60,4 +60,22 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+
+    public function listTokens(Request $request): Response
+    {
+        return Inertia::render('settings/AccessToken', [
+            'tokens' => $request->user()->tokens
+        ]);
+    }
+
+    public function generateAccessToken(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required'],
+        ]);
+
+        $token = $request->user()->createToken($request->name);
+
+        return to_route('accesstoken.list')->with('message',$token->plainTextToken);
+    }
 }

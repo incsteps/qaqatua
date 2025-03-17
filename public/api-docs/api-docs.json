@@ -1,0 +1,242 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "QA Encription/Decription API",
+        "description": "QA enc/dec api",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "local server"
+        },
+        {
+            "url": "https://qaqatua.com",
+            "description": "production server"
+        }
+    ],
+    "paths": {
+        "/api/encrypt": {
+            "post": {
+                "summary": "Encrypt a payload",
+                "operationId": "82e0cf0919110dcdd53c7ea05981df5e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "example": {
+                                        "description": "",
+                                        "required": [
+                                            "false"
+                                        ],
+                                        "type": "string",
+                                        "example": "My Project"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/decrypt": {
+            "post": {
+                "summary": "Decrypt a payload",
+                "operationId": "7fd39b5d5b8d3ed7c2de9c9a213f11ea",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "example": {
+                                        "description": "",
+                                        "required": [
+                                            "false"
+                                        ],
+                                        "type": "string",
+                                        "example": "DWmP95kLSEQx/+wxkbWidpQjuPk6Wqc2N8+BT4D0fGJuvg3lu36The+mdz4t8bwB1Fjo+ARv4x1gaTLn+cs0Ap8u3HLwReAKQk3xHcONgJPUE4QJY6d1XF0rGptBr5tueGjRu3ZefmcKYLmSmN2sWUhQnDghA871tIEN2VAIiXiCQUkHL4Rk94FLU1LaF/whaqC0BI+QNMoc7sagIdoOBIjCXApKblY40sib8HqOGuTkjwhDtHPGWMWMxgQmdoawnpH8DbthlVyxSu7Jkqtb6iAJgsYXQZ3ysFSK5k3hnH5ddbFMrpeteDtrKXg9aFZi2fg/oO9uaxKFBm909ceImw=="
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/projects": {
+            "get": {
+                "operationId": "getProjects",
+                "responses": {
+                    "200": {
+                        "description": "The project list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create a project",
+                "operationId": "95460120486228ab121d2a6b1a365c43",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the project",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": "My Project"
+                                    },
+                                    "privkey": {
+                                        "description": "The private key base64 encoded",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "pubkey": {
+                                        "description": "The public key base64 encoded",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "fields": {
+                                        "description": "A comma list of fields to enc/decp by default",
+                                        "required": [
+                                            "false"
+                                        ],
+                                        "type": "string",
+                                        "example": "iban,account,user.pin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/projects/{id}": {
+            "put": {
+                "summary": "Update a project",
+                "operationId": "fe8376ed54386b099625d25e5481b09e",
+                "parameters": [
+                    {
+                        "parameter": "id",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the project",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": "My Project"
+                                    },
+                                    "privkey": {
+                                        "description": "The private key base64 encoded",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "pubkey": {
+                                        "description": "The public key base64 encoded",
+                                        "required": [
+                                            "true"
+                                        ],
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "fields": {
+                                        "description": "A comma list of fields to enc/decp by default",
+                                        "required": [
+                                            "false"
+                                        ],
+                                        "type": "string",
+                                        "example": "iban,account,user.pin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
