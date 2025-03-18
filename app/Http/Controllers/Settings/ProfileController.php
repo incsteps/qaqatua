@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ProfileController extends Controller
 {
@@ -75,7 +76,21 @@ class ProfileController extends Controller
         ]);
 
         $token = $request->user()->createToken($request->name);
+        $plainTextToken = explode("|", $token->plainTextToken)[1];
 
-        return to_route('accesstoken.list')->with('message',$token->plainTextToken);
+        return to_route('accesstoken.list')->with('message',$plainTextToken);
+    }
+
+
+    public function deleteAccessToken(Request $request): RedirectResponse
+    {
+
+        foreach ($request->user()->tokens as $t) {
+            if( $request->id == $t->id ){
+                $t->delete();
+            }
+        }
+
+        return to_route('accesstoken.list')->with('message',"Token deleted");
     }
 }

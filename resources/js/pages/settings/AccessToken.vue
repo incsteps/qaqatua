@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import {Head, router, useForm, usePage} from '@inertiajs/vue3';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
+import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {
     Dialog, DialogClose,
     DialogContent,
@@ -45,6 +46,10 @@ const submit = () => {
     });
 };
 
+const deleteToken = (id)=>{
+    router.delete(route('accesstoken.delete',{id:id}))
+}
+
 </script>
 
 <template>
@@ -57,6 +62,9 @@ const submit = () => {
                 <Table>
                     <thead>
                     <tr>
+                        <th class="text-left">
+                            &nbsp;
+                        </th>
                         <th class="text-left">
                             Name
                         </th>
@@ -75,6 +83,7 @@ const submit = () => {
                     <tr
                         v-for="item in tokens"
                         :key="item.id">
+                        <td><button @click="deleteToken(item.id)">Delete</button></td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.abilities }}</td>
                         <td>{{ item.created_at }}</td>

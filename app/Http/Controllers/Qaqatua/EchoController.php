@@ -18,15 +18,13 @@ class EchoController extends Controller
     {
     }
 
-    private function privateKey(User $user){
-        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+    private function privateKey(Project $project){
         $strPrivkey = $project->privkey;
         $privKey = PublicKeyLoader::loadPrivateKey($strPrivkey);
         return $privKey;
     }
 
-    private function publicKey(User $user){
-        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+    private function publicKey(Project $project){
         $strPublicKey = $project->pubkey;
         $pubKey = PublicKeyLoader::loadPublicKey($strPublicKey);
         return $pubKey;
@@ -54,16 +52,18 @@ class EchoController extends Controller
     public function encrypt(Request $request) : JsonResponse
     {
         try {
-            $pubKey = $this->publicKey($request->user());
+            $project = Project::where('user_id', $request->user()->id)->first(); //$user->projects()[0];
+            $pubKey = $this->publicKey($project);
 
-            $input = json_decode($request->getContent(), true);;
+            $input = $request->all();
 
             $fields = $this->fields($request->user());
             foreach ($fields as $field){
-                if( isset($input[$field]) ) {
-                    $encode = $input[$field];
+                $founded = data_get($input, $field);
+                if( $founded ) {
+                    $encode = $founded;
                     openssl_public_encrypt($encode, $encrypted, $pubKey);
-                    $input[$field] = base64_encode($encrypted);
+                    data_set($input, $field, base64_encode($encrypted));
                 }
             }
 
@@ -91,16 +91,19 @@ class EchoController extends Controller
     public function decrypt(Request $request) : JsonResponse
     {
         try{
-            $privKey = $this->privateKey($request->user());
+            $project = Project::where('user_id', $request->user()->id)->first(); //$user->projects()[0];
+
+            $privKey = $this->privateKey($project);
 
             $input = $request->all();
 
             $fields = $this->fields($request->user());
             foreach ($fields as $field){
-                if( isset($input[$field]) ) {
-                    $decoded = base64_decode($input[$field]);
+                $founded = data_get($input, $field);
+                if( $founded ) {
+                    $decoded = base64_decode($founded);
                     openssl_private_decrypt($decoded, $decrypted, $privKey);
-                    $input[$field] = $decrypted;
+                    data_set($input, $field, $decrypted);
                 }
             }
             return response()->json($input, 201);

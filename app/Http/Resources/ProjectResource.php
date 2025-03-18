@@ -15,9 +15,8 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'privkey' => substr($this->privkey.'********',0,8).'*******',
-            'pubkey' => substr($this->pubkey.'********',0,8).'*******',
-            'token' => substr($this->token.'********',0,8).'*******',
+            'privkey' => strlen($this->privkey).' bytes',
+            'pubkey' => strlen($this->pubkey).' bytes',
             'fields' => $this->fields,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),

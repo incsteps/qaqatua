@@ -7,7 +7,11 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use OpenApi\Attributes as OA;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PrivateKey;
+
 class ProjectController extends ApiController
 {
 
@@ -55,23 +59,37 @@ class ProjectController extends ApiController
         type: 'object'
     ))]
     #[OA\Response(response: '200', description: 'The project')]
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
+        $isInnertia = $request->header('X-Inertia');
+
         $current = Project::where('user_id', $request->user()->id)->count();
         if( $current > 0 ){
-            return $this->sendError(403, "No more projects available");
+            return $isInnertia ?
+                back()->withErrors(["name"=>"No more projects available"]) :
+                $this->sendError(403, "No more projects available");
         }
 
-        $input = $request->all();
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required',
-            'privkey' => 'required',
-            'pubkey' => 'required',
+            'fields' => 'sometimes',
+            'privkey' => 'sometimes',
+            'pubkey' => 'sometimes',
         ]);
-        $input['user_id']=$request->user()->id;
+        $validated['user_id']=$request->user()->id;
 
-        $project = Project::create($input);
+        if( $validated['privkey'] == null || $validated['pubkey']==null){
+            $private_key = RSA::createKey();
+            $public_key = $private_key->getPublicKey();
+            $validated['privkey'] = $private_key->toString("PKCS1");
+            $validated['pubkey'] = $public_key->toString("PKCS1");
+        }
 
+        $project = Project::create($validated);
+
+        if( $isInnertia){
+            return back();
+        }
         return $this->sendResponse(new ProjectResource($project), 'Project created successfully.');
     }
 
@@ -111,17 +129,38 @@ class ProjectController extends ApiController
         type: 'object'
     ))]
     #[OA\Response(response: '200', description: 'The project')]
-    public function update(Request $request, Project $project): JsonResponse
+    public function update(Request $request, $id)
     {
-        logger($project);
+        $project = Project::find($id);
         $validated = $request->validate([
-            'name'=>'required',
+            'name'=>'sometimes',
             'privkey'=>'sometimes',
             'pubkey'=>'sometimes',
             'fields'=>'sometimes',
         ]);
-
         $project->update($validated);
+
+        $isInnertia = $request->header('X-Inertia');
+        if( $isInnertia){
+            return back();
+        }
+
         return $this->sendResponse(new ProjectResource($project), 'Project updated successfully.');
+    }
+
+    #[OA\Delete(path:"/api/projects/{id}",summary:"delete a project",security:[['bearerAuth'=>[]]])]
+    #[OA\PathParameter(parameter: "id", name: "id")]
+    #[OA\Response(response: '200', description: 'The project has been deleted')]
+    public function delete(Request $request, $id)
+    {
+        $project = Project::find($id);
+        $project->delete();
+
+        $isInnertia = $request->header('X-Inertia');
+        if( $isInnertia){
+            return back();
+        }
+
+        return $this->sendResponse(new ProjectResource($project), 'Project deleted successfully.');
     }
 }

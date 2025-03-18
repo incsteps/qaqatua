@@ -21,4 +21,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/accesstoken', [ProfileController::class, 'listTokens'])->name('accesstoken.list');
     Route::put('settings/accesstoken', [ProfileController::class, 'generateAccessToken'])->name('accesstoken.generate');
+    Route::delete('settings/accesstoken', [ProfileController::class, 'deleteAccessToken'])->name('accesstoken.delete');
 });
