@@ -37,7 +37,7 @@ Use this token in the header of your requests.
 After create a project and an access token you can encrypt/decrypt your payloads using the endpoint:
 
 ```bash
-curl -X POST "https://qaqatua/api/encrypt" -H "Authorization: Bearer <your_token>" -d '{"payload": "your_payload"}'
+curl -X POST "https://qaqatua.com/api/encrypt" -H "Authorization: Bearer <your_token>" -d '{"payload": "your_payload"}'
 ```
 
 In case you have not specified any "fields" in the project, the payload will not be encrypted/decrypted and the
@@ -53,7 +53,7 @@ In case you specified `payload` as a field to encrypt/decrypt, the response will
 In the same way you can decrypt a payload using the endpoint `/api/decrypt`:
 
 ```bash
-curl -X POST "https://qaqatua/api/decrypt" -H "Authorization: Bearer <your_token>" -d '{"payload": "123213....=="}'
+curl -X POST "https://qaqatua.com/api/decrypt" -H "Authorization: Bearer <your_token>" -d '{"payload": "123213....=="}'
 ```
 
 The response will be the decrypted payload, '{"payload": "your_payload"}' in this case.
