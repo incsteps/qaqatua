@@ -20,6 +20,18 @@
             "post": {
                 "summary": "Encrypt a payload",
                 "operationId": "82e0cf0919110dcdd53c7ea05981df5e",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "a comma list of fields to operate"
+                    },
+                    {
+                        "name": "op",
+                        "in": "query",
+                        "description": " \"merge\" or \"overwrite\" the default list of fields"
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -56,6 +68,18 @@
             "post": {
                 "summary": "Decrypt a payload",
                 "operationId": "7fd39b5d5b8d3ed7c2de9c9a213f11ea",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "a comma list of fields to operate"
+                    },
+                    {
+                        "name": "op",
+                        "in": "query",
+                        "description": " \"merge\" or \"overwrite\" the default list of fields"
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -219,6 +243,27 @@
                 "responses": {
                     "200": {
                         "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "delete a project",
+                "operationId": "9516d5cd2a86b3c7b430c06049aa1bf8",
+                "parameters": [
+                    {
+                        "parameter": "id",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The project has been deleted"
                     }
                 },
                 "security": [

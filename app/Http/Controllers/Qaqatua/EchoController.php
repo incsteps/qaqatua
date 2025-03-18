@@ -35,7 +35,21 @@ class EchoController extends Controller
         return explode(",",''.$project->fields);
     }
 
+    private function requestFields(Request $request, array $fields){
+        if( $request->has('fields') ) {
+            $paramfields = explode(",",$request->query('fields'));
+            if( $request->has('op') && $request->query('op') =='merge') {
+                return array_merge($fields, $paramfields);
+            }else {
+                return $paramfields;
+            }
+        }
+        return $fields;
+    }
+
     #[OA\Post(path:"/api/encrypt",summary:"Encrypt a payload",security:[['bearerAuth'=>[]]])]
+    #[OA\QueryParameter(name: 'fields', description: 'a comma list of fields to operate')]
+    #[OA\QueryParameter(name: 'op', description: ' "merge" or "overwrite" the default list of fields')]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(
         properties: [
             new OA\Property(
@@ -55,10 +69,12 @@ class EchoController extends Controller
             $project = Project::where('user_id', $request->user()->id)->first(); //$user->projects()[0];
             $pubKey = $this->publicKey($project);
 
-            $input = $request->all();
+            $input = json_decode($request->getContent(), true);
 
             $fields = $this->fields($request->user());
+            $fields = $this->requestFields($request, $fields);
             foreach ($fields as $field){
+                $field = trim($field);
                 $founded = data_get($input, $field);
                 if( $founded ) {
                     $encode = $founded;
@@ -87,6 +103,8 @@ class EchoController extends Controller
         ],
         type: 'object'
     ))]
+    #[OA\QueryParameter(name: 'fields', description: 'a comma list of fields to operate')]
+    #[OA\QueryParameter(name: 'op', description: ' "merge" or "overwrite" the default list of fields')]
     #[OA\Response(response: '200', description: 'The project')]
     public function decrypt(Request $request) : JsonResponse
     {
@@ -98,7 +116,9 @@ class EchoController extends Controller
             $input = $request->all();
 
             $fields = $this->fields($request->user());
+            $fields = $this->requestFields($request, $fields);
             foreach ($fields as $field){
+                $field = trim($field);
                 $founded = data_get($input, $field);
                 if( $founded ) {
                     $decoded = base64_decode($founded);
