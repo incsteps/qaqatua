@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.20" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const useChoice = localStorage.getItem('vuepress-color-scheme')
+      const systemStatus =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (useChoice === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (useChoice === 'dark' || systemStatus) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="icon" href="/qaqatua.png"><title>Qaqatua</title><meta name="description" content="An enc/dec echo server, usefully for QA testing">
+    <link rel="preload" href="/documentation/assets/style-CGF7vXTy.css" as="style"><link rel="stylesheet" href="/documentation/assets/style-CGF7vXTy.css">
+    <link rel="modulepreload" href="/documentation/assets/app-DcHSpXOQ.js"><link rel="modulepreload" href="/documentation/assets/404.html-BY-zy0_X.js">
+    <link rel="prefetch" href="/documentation/assets/index.html-CY5Y1aUa.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-5cb2f36e><main class="page" data-v-5cb2f36e><div vp-content data-v-5cb2f36e><h1 data-v-5cb2f36e>404</h1><blockquote data-v-5cb2f36e>That&#39;s a Four-Oh-Four.</blockquote><a class="route-link" href="/documentation/" data-v-5cb2f36e>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/documentation/assets/app-DcHSpXOQ.js" defer></script>
+  </body>
+</html>
