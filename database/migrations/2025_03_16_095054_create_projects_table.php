@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('privkey');
             $table->string('pubkey');
             $table->string('fields')->nullable();
-            $table->unsignedInteger('user_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
