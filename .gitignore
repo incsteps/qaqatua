@@ -30,3 +30,4 @@ docs/.vuepress/.cache
 docs/.vuepress/dist
 public/documentation/**
 deploy.sh
+deploy.php
