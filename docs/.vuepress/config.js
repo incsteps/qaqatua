@@ -10,6 +10,10 @@ export default defineUserConfig({
                 text: 'Qaqatua',
                 link: '../',
             },
+            {
+                text: 'OpenSource',
+                link: 'https://github.com/incsteps/qaqatua',
+            },
         ],
         locales: {
             '/': {
@@ -18,7 +22,34 @@ export default defineUserConfig({
             '/es/': {
                 selectLanguageName: 'Español',
             }
-        }
+        },
+        sidebar: [
+            {
+                text: "Welcome",
+                link: "/",
+                icon: "lightbulb",
+            },
+            {
+                text: "Guide",
+                link: "/guide",
+                icon: "config"
+            },
+            {
+                text: "Encrypt",
+                link: "/encrypt",
+                icon: "key"
+            },
+            {
+                text: "Decrypt",
+                link: "/decrypt",
+                icon: "key"
+            },
+            {
+                text: "Fields",
+                link: "/fields",
+                icon: "fields"
+            },
+        ],
     }),
 
     base: '/documentation/',
