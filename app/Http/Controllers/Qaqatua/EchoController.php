@@ -30,9 +30,19 @@ class EchoController extends Controller
         return $pubKey;
     }
 
-    private function fields(User $user){
-        $project = Project::where('user_id', $user->id)->first(); //$user->projects()[0];
+    private function fields(Project $project){
         return explode(",",''.$project->fields);
+    }
+
+    private function findProject(Request $request) : Project{
+        $projects = Project::where('user_id', $request->user()->id)->get();
+        $projectName = $request->header('X-Project') ?: "";
+        foreach ($projects as $p){
+            if( $p->name == $projectName ){
+                return $p;
+            }
+        }
+        return $projects[0];
     }
 
     private function requestFields(Request $request, array $fields){
@@ -66,12 +76,12 @@ class EchoController extends Controller
     public function encrypt(Request $request) : JsonResponse
     {
         try {
-            $project = Project::where('user_id', $request->user()->id)->first(); //$user->projects()[0];
+            $project = $this->findProject($request);
             $pubKey = $this->publicKey($project);
 
             $input = json_decode($request->getContent(), true);
 
-            $fields = $this->fields($request->user());
+            $fields = $this->fields($project);
             $fields = $this->requestFields($request, $fields);
             foreach ($fields as $field){
                 $field = trim($field);
@@ -109,13 +119,13 @@ class EchoController extends Controller
     public function decrypt(Request $request) : JsonResponse
     {
         try{
-            $project = Project::where('user_id', $request->user()->id)->first(); //$user->projects()[0];
+            $project = $this->findProject($request);
 
             $privKey = $this->privateKey($project);
 
-            $input = $request->all();
+            $input = json_decode($request->getContent(), true);
 
-            $fields = $this->fields($request->user());
+            $fields = $this->fields($project);
             $fields = $this->requestFields($request, $fields);
             foreach ($fields as $field){
                 $field = trim($field);
@@ -126,7 +136,8 @@ class EchoController extends Controller
                     data_set($input, $field, $decrypted);
                 }
             }
-            return response()->json($input, 201);
+
+            return response()->json($input, 200);
         }catch (\Exception $e){
             return response()->json(["error"=>$e->getMessage()], 500);
         }

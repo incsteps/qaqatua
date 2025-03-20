@@ -64,7 +64,7 @@ class ProjectController extends ApiController
         $isInnertia = $request->header('X-Inertia');
 
         $current = Project::where('user_id', $request->user()->id)->count();
-        if( $current > 0 ){
+        if( $current > 3 ){
             return $isInnertia ?
                 back()->withErrors(["name"=>"No more projects available"]) :
                 $this->sendError(403, "No more projects available");

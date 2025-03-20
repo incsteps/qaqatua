@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import {BookOpen, Folder, Footprints, LayoutGrid} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -18,13 +18,18 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'OpenAI',
+        title: 'SwaggerUI',
         href: 'https://qaqatua.com/api/documentation',
         icon: Folder,
     },
     {
-        title: 'Documentation',
+        title: 'OpenApi',
         href: 'https://qaqatua.com/docs',
+        icon: Footprints,
+    },
+    {
+        title: 'Documentation',
+        href: 'https://qaqatua.com/documentation',
         icon: BookOpen,
     },
 ];

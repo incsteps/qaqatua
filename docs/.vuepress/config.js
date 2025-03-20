@@ -8,7 +8,7 @@ export default defineUserConfig({
         navbar: [
             {
                 text: 'Qaqatua',
-                link: '../',
+                link: 'https://qaqatua.com/',
             },
             {
                 text: 'OpenSource',
@@ -35,19 +35,26 @@ export default defineUserConfig({
                 icon: "config"
             },
             {
-                text: "Encrypt",
-                link: "/encrypt",
-                icon: "key"
-            },
-            {
-                text: "Decrypt",
-                link: "/decrypt",
-                icon: "key"
-            },
-            {
-                text: "Fields",
-                link: "/fields",
-                icon: "fields"
+                text: "Reference",
+                link: "#",
+                icon: "config",
+                children:[
+                    {
+                        text: "Encrypt",
+                        link: "/encrypt",
+                        icon: "key"
+                    },
+                    {
+                        text: "Decrypt",
+                        link: "/decrypt",
+                        icon: "key"
+                    },
+                    {
+                        text: "Fields",
+                        link: "/fields",
+                        icon: "fields"
+                    },
+                ]
             },
         ],
     }),
