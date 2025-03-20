@@ -17,9 +17,9 @@ class ProjectController extends ApiController
 
     #[OA\Get(path: '/api/projects', operationId: 'getProjects',security:[['bearerAuth'=>[]]])]
     #[OA\Response(response: '200', description: 'The project list')]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $projects = Project::all();
+        $projects = Project::where('user_id', $request->user()->id)->get();
 
         return $this->sendResponse(ProjectResource::collection($projects), 'Projects retrieved successfully.');
     }
