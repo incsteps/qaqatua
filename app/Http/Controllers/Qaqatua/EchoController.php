@@ -36,7 +36,7 @@ class EchoController extends Controller
 
     private function findProject(Request $request) : Project{
         $projects = Project::where('user_id', $request->user()->id)->get();
-        $projectName = $request->header('X-Project') ?: "";
+        $projectName = $request->query('project') ?: "";
         foreach ($projects as $p){
             if( $p->name == $projectName ){
                 return $p;
@@ -58,6 +58,7 @@ class EchoController extends Controller
     }
 
     #[OA\Post(path:"/api/encrypt",summary:"Encrypt a payload",security:[['bearerAuth'=>[]]])]
+    #[OA\QueryParameter(name: 'project', description: 'the project to use')]
     #[OA\QueryParameter(name: 'fields', description: 'a comma list of fields to operate')]
     #[OA\QueryParameter(name: 'op', description: ' "merge" or "overwrite" the default list of fields')]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(
@@ -113,6 +114,7 @@ class EchoController extends Controller
         ],
         type: 'object'
     ))]
+    #[OA\QueryParameter(name: 'project', description: 'the project to use')]
     #[OA\QueryParameter(name: 'fields', description: 'a comma list of fields to operate')]
     #[OA\QueryParameter(name: 'op', description: ' "merge" or "overwrite" the default list of fields')]
     #[OA\Response(response: '200', description: 'The project')]

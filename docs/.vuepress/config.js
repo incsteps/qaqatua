@@ -40,6 +40,16 @@ export default defineUserConfig({
                 icon: "config",
                 children:[
                     {
+                        text: "Projects",
+                        link: "/projects",
+                        icon: "project"
+                    },
+                    {
+                        text: "Fields",
+                        link: "/fields",
+                        icon: "fields"
+                    },
+                    {
                         text: "Encrypt",
                         link: "/encrypt",
                         icon: "key"
@@ -48,11 +58,6 @@ export default defineUserConfig({
                         text: "Decrypt",
                         link: "/decrypt",
                         icon: "key"
-                    },
-                    {
-                        text: "Fields",
-                        link: "/fields",
-                        icon: "fields"
                     },
                 ]
             },
