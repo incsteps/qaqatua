@@ -57,3 +57,18 @@ curl -X POST "https://qaqatua.com/api/decrypt" -H "Authorization: Bearer <your_t
 ```
 
 The response will be the decrypted payload, '{"payload": "your_payload"}' in this case.
+
+
+## Docker
+
+Grab the repository and execute:
+
+`docker build -t qaqatua .`
+
+Run a container
+
+`docker run --rm -it -p 8000:80 qaqatua`
+
+Or use prebuilt images, for example
+
+`docker run --rm -it -p 8000:8000 incsteps/qaqatua:0.0.1-rc1`

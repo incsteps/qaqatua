@@ -1,5 +1,5 @@
 FROM php:8.3.19-apache
-EXPOSE 8000
+EXPOSE 80
 
 RUN apt-get update && apt-get install -y \
     libzip-dev \
