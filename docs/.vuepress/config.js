@@ -18,50 +18,90 @@ export default defineUserConfig({
         locales: {
             '/': {
                 selectLanguageName: 'English',
-            },
-            '/es/': {
-                selectLanguageName: 'Español',
-            }
-        },
-        sidebar: [
-            {
-                text: "Welcome",
-                link: "/",
-                icon: "lightbulb",
-            },
-            {
-                text: "Guide",
-                link: "/guide",
-                icon: "config"
-            },
-            {
-                text: "Reference",
-                link: "#",
-                icon: "config",
-                children:[
+                sidebar: [
                     {
-                        text: "Projects",
-                        link: "/projects",
-                        icon: "project"
+                        text: "Welcome",
+                        link: "/",
+                        icon: "lightbulb",
                     },
                     {
-                        text: "Fields",
-                        link: "/fields",
-                        icon: "fields"
+                        text: "Guide",
+                        link: "/guide",
+                        icon: "config"
                     },
                     {
-                        text: "Encrypt",
-                        link: "/encrypt",
-                        icon: "key"
-                    },
-                    {
-                        text: "Decrypt",
-                        link: "/decrypt",
-                        icon: "key"
+                        text: "Reference",
+                        link: "#",
+                        icon: "config",
+                        children:[
+                            {
+                                text: "Projects",
+                                link: "/projects",
+                                icon: "project"
+                            },
+                            {
+                                text: "Fields",
+                                link: "/fields",
+                                icon: "fields"
+                            },
+                            {
+                                text: "Encrypt",
+                                link: "/encrypt",
+                                icon: "key"
+                            },
+                            {
+                                text: "Decrypt",
+                                link: "/decrypt",
+                                icon: "key"
+                            },
+                        ]
                     },
                 ]
             },
-        ],
+            '/es/': {
+                selectLanguageName: 'Español',
+                sidebar: [
+                    {
+                        text: "Bienvenido",
+                        link: "/es/",
+                        icon: "lightbulb",
+                    },
+                    {
+                        text: "Guia",
+                        link: "/es/guide",
+                        icon: "config"
+                    },
+                    {
+                        text: "Referencia",
+                        link: "#",
+                        icon: "config",
+                        children:[
+                            {
+                                text: "Projects",
+                                link: "/es/projects",
+                                icon: "project"
+                            },
+                            {
+                                text: "Fields",
+                                link: "/es/fields",
+                                icon: "fields"
+                            },
+                            {
+                                text: "Encrypt",
+                                link: "/es/encrypt",
+                                icon: "key"
+                            },
+                            {
+                                text: "Decrypt",
+                                link: "/es/decrypt",
+                                icon: "key"
+                            },
+                        ]
+                    },
+                ],
+            },
+        },
+
     }),
 
     base: '/documentation/',
