@@ -24,7 +24,7 @@ encrypted.
 
 We (as QA) want to validate values returned are as expected. 
 
-We can validate "clear" fields but not the encrypted fields so we'll send the payload to qaqatua `decrypt` endpoint:
+We can validate "clear" fields but not the encrypted fields so we'll send the payload to QaQatua `decrypt` endpoint:
 
 
 ## Send request
@@ -42,7 +42,7 @@ curl -X POST "https://qaqatua.com/api/decrypt" -H "Authorization: Bearer <your_t
 }'
 ```
 
-Qaqatua will return something as:
+QaQatua will return something as:
 
 ```json
 {

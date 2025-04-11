@@ -2,7 +2,7 @@
 
 ## Crea una cuenta
 
-En primer lugar debes crear una cuenta en Qaqatua, usando tu email y creando una password.
+En primer lugar debes crear una cuenta en QaQatua, usando tu email y creando una password.
 
 ## Login
 
@@ -19,7 +19,7 @@ uno que ya tengas.
 ## Crear un access token
 
 En la seccion de `settings` puedes crear tantos tokens como necesites. Los tokens son necesarios para poder realizar
-las peticiones a Qaqatua.
+las peticiones a QaQatua.
 
 **Guarda el token proporcionado justo cuando lo creas pues no se vuelve a mostrar**
 

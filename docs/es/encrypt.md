@@ -43,7 +43,7 @@ curl -X POST "https://qaqatua.com/api/encrypt" -H "Authorization: Bearer <your_t
 }'
 ```
 
-A lo que Qaqatua responderá con algo similar a :
+A lo que QaQatua responderá con algo similar a :
 
 ```json
 {

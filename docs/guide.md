@@ -2,7 +2,7 @@
 
 ## Create an account
 
-First of all you need to create an account in Qaqatua, using your email and password.
+First of all you need to create an account in QaQatua, using your email and password.
 
 ## Login
 

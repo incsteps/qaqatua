@@ -23,7 +23,7 @@ Say we have some payloads we want to send to a service and some parts needs to b
 
 Say the service expect `person.nif` and `bank_account.iban` be encrypted
 
-We configure qaqatua's project fields as:
+We configure QaQatua's project fields as:
 
 `person.nif, bank_account.iban`
 
@@ -42,7 +42,7 @@ curl -X POST "https://qaqatua.com/api/encrypt" -H "Authorization: Bearer <your_t
 }'
 ```
 
-Qaqatua will return something as:
+QaQatua will return something as:
 
 ```json
 {

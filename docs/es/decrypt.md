@@ -25,7 +25,7 @@ un payload donde algunos campos están encriptados y queremos validar que la res
 Validar el resto de los campos es fácil, pero para poder validar los campos encriptados necesitamos las keys
 y además realizar algun proceso (tal vez usando Java, Groovy o Javascript).
 
-Sin embargo, podemos delegar en Qaqatua la conversion haciendo la llamada
+Sin embargo, podemos delegar en QaQatua la conversion haciendo la llamada
 
 ## Enviando la request
 
@@ -42,7 +42,7 @@ curl -X POST "https://qaqatua.com/api/decrypt" -H "Authorization: Bearer <your_t
 }'
 ```
 
-A lo que Qaqatua responderá con algo similar a:
+A lo que QaQatua responderá con algo similar a:
 
 ```json
 {
