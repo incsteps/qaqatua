@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Array_;
 use phpseclib3\Crypt\PublicKeyLoader;
 use OpenApi\Attributes as OA;
 
@@ -35,14 +36,21 @@ class EchoController extends Controller
     }
 
     private function findProject(Request $request) : Project{
-        $projects = Project::where('user_id', $request->user()->id)->get();
-        $projectName = $request->query('project') ?: "";
-        foreach ($projects as $p){
-            if( $p->name == $projectName ){
-                return $p;
+        try {
+            $projects = Project::where('user_id', $request->user()->id)->get();
+            if($projects->isEmpty()){
+                return new Project();
             }
+            $projectName = $request->query('project') ?: "";
+            foreach ($projects as $p) {
+                if ($p->name == $projectName) {
+                    return $p;
+                }
+            }
+            return $projects[0];
+        }catch (\Exception $e){
+            return new Project();
         }
-        return $projects[0];
     }
 
     private function requestFields(Request $request, array $fields){
@@ -143,6 +151,70 @@ class EchoController extends Controller
         }catch (\Exception $e){
             return response()->json(["error"=>$e->getMessage()], 500);
         }
+    }
+
+    #[OA\Post(path:"/api/ofuscate",summary:"Ofusct a payload",security:[['bearerAuth'=>[]]])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(
+        properties: [
+            new OA\Property(
+                property: "example",
+                description: "",
+                required: ["false"],
+                type: "string",
+                example: "hola caracola"
+            )
+        ],
+        type: 'object'
+    ))]
+    #[OA\QueryParameter(name: 'project', description: 'the project to use')]
+    #[OA\QueryParameter(name: 'fields', description: 'a comma list of fields to operate')]
+    #[OA\QueryParameter(name: 'op', description: ' "merge" or "overwrite" the default list of fields')]
+    #[OA\Response(response: '200', description: 'The project')]
+    public function ofuscate(Request $request) : JsonResponse
+    {
+        try{
+            $project = $this->findProject($request);
+
+            $input = json_decode($request->getContent(), true);
+
+            $fields = $this->fields($project);
+            $fields = $this->requestFields($request, $fields);
+            foreach ($fields as $field){
+                $field = trim($field);
+                $founded = data_get($input, $field);
+                if( $founded ) {
+                    $ofuscated = $this->ofuscarCadena($founded, ['@', '.', '/','-',' ']);
+                    data_set($input, $field, $ofuscated);
+                }
+            }
+
+            return response()->json($input, 200);
+        }catch (\Exception $e){
+            print($e->getTraceAsString());
+            return response()->json(["error"=>$e->getMessage()], 500);
+        }
+    }
+
+    function ofuscarCadena($cadena, $excluirCaracteres = []) {
+        $cadenaOfuscada = '';
+        $longitudCadena = strlen($cadena);
+
+        for ($i = 0; $i < $longitudCadena; $i++) {
+            $caracter = $cadena[$i];
+
+            if (in_array($caracter, $excluirCaracteres)) {
+                $cadenaOfuscada .= $caracter; // Mantener el carácter original si está excluido
+            } else {
+                if (preg_match('/[a-zA-Z0-9]/', $caracter)){
+                    // Algoritmo de ofuscación simple: desplazar el valor ASCII
+                    $valorAscii = ord($caracter);
+                    $valorOfuscado = $valorAscii + 5; // Puedes ajustar este valor de desplazamiento
+                    $cadenaOfuscada .= chr($valorOfuscado);
+                }
+            }
+        }
+
+        return $cadenaOfuscada; // Codificar en Base64 para mayor ofuscación
     }
 
 }
