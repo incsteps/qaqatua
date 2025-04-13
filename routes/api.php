@@ -18,4 +18,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::post('/decrypt', [EchoController::class, 'decrypt'])
         ->name("decrypt");
+
+    Route::post('/ofuscate', [EchoController::class, 'ofuscate'])
+        ->name("ofuscate");
 });

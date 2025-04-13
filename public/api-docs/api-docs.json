@@ -122,6 +122,59 @@
                 ]
             }
         },
+        "/api/ofuscate": {
+            "post": {
+                "summary": "Ofusct a payload",
+                "operationId": "34ab7df3118b7c5a2b981e10744de8b7",
+                "parameters": [
+                    {
+                        "name": "project",
+                        "in": "query",
+                        "description": "the project to use"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "a comma list of fields to operate"
+                    },
+                    {
+                        "name": "op",
+                        "in": "query",
+                        "description": " \"merge\" or \"overwrite\" the default list of fields"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "example": {
+                                        "description": "",
+                                        "required": [
+                                            "false"
+                                        ],
+                                        "type": "string",
+                                        "example": "hola caracola"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The project"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/projects": {
             "get": {
                 "operationId": "getProjects",
