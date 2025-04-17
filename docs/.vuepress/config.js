@@ -54,6 +54,11 @@ export default defineUserConfig({
                                 link: "/decrypt",
                                 icon: "key"
                             },
+                            {
+                                text: "Ofuscate",
+                                link: "/ofuscate",
+                                icon: "key"
+                            },
                         ]
                     },
                 ]
@@ -94,6 +99,11 @@ export default defineUserConfig({
                             {
                                 text: "Decrypt",
                                 link: "/es/decrypt",
+                                icon: "key"
+                            },
+                            {
+                                text: "Ofuscar",
+                                link: "/es/ofuscate",
                                 icon: "key"
                             },
                         ]

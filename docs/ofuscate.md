@@ -28,11 +28,8 @@ curl -X POST "https://qaqatua.com/api/ofuscate" -H "Authorization: Bearer <your_
     "person": {
         "name": "jorge",
         "apellido": "aguilera",
-        "nif": "AAAAAA===="
+        "email": "hola@caracola"
     },
-    "bank_account": {
-        "iban": "AAAAAA===="
-    }
 }'
 ```
 
