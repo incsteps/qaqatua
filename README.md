@@ -71,4 +71,4 @@ Run a container
 
 Or use prebuilt images, for example
 
-`docker run --rm -it -p 8000:8000 incsteps/qaqatua:0.0.1-rc1`
+`docker run --rm -it -p 8000:80 incsteps/qaqatua:0.0.1-rc2`
